@@ -1,5 +1,6 @@
 package Methods;
 
+import Entity.Books;
 import Entity.OrderInformation;
 
 import java.sql.*;
@@ -8,11 +9,34 @@ import java.util.List;
 
 public class OrderInformationMethod {
     public boolean addOrderInformation(OrderInformation OrderInformation) {
-        try (Connection connection = connect();) {
-            PreparedStatement st = connection.prepareStatement("INSERT INTO orderinformation (order_id, book_id) VALUES (?,?)");
-            st.setInt(1, OrderInformation.getOrder_id());
-            st.setInt(2, OrderInformation.getBook_id());
-            return st.execute();
+        try (Connection connection = connect();
+             PreparedStatement insertOrderStatement = connection.prepareStatement("INSERT INTO orderinformation (order_id, book_id,orderedbooks) VALUES (?, ?, ?)");
+             PreparedStatement updateBookStatement = connection.prepareStatement("UPDATE books SET stock = ? WHERE book_id = ?")) {
+
+            connection.setAutoCommit(false);
+
+            int book_id = OrderInformation.getBook_id();
+            int orderedbooks = OrderInformation.getOrderedbooks();
+            Books book = BooksMethod.getBookById(book_id);
+
+            if (book != null && book.getStock() >= orderedbooks) {
+                insertOrderStatement.setInt(1, OrderInformation.getOrder_id());
+                insertOrderStatement.setInt(2, OrderInformation.getBook_id());
+                insertOrderStatement.setInt(3, OrderInformation.getOrderedbooks());
+                insertOrderStatement.executeUpdate();
+
+                int updatedStock = book.getStock() - orderedbooks;
+                updateBookStatement.setInt(1, updatedStock);
+                updateBookStatement.setInt(2, book_id);
+                updateBookStatement.executeUpdate();
+
+                connection.commit();
+                return true;
+            } else {
+                connection.rollback();
+                System.out.println("Not enough books in stock for this order.");
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
@@ -28,7 +52,8 @@ public class OrderInformationMethod {
             while (res.next()) {
                 int order_id = res.getInt("order_id");
                 int book_id = res.getInt("book_id");
-                OrderInformation.add(new OrderInformation(order_id, book_id));
+                int orderedbooks = res.getInt("orderedbooks");
+                OrderInformation.add(new OrderInformation(order_id, book_id, orderedbooks));
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -38,9 +63,10 @@ public class OrderInformationMethod {
 
     public boolean updateOrderInformation(OrderInformation OrderInformation) {
         try (Connection connection = connect()) {
-            PreparedStatement st = connection.prepareStatement("UPDATE orderinformation SET book_id=? WHERE order_id=?");
+            PreparedStatement st = connection.prepareStatement("UPDATE orderinformation SET book_id=?, orderedbooks=? WHERE order_id=?");
             st.setInt(1, OrderInformation.getBook_id());
             st.setInt(2, OrderInformation.getOrder_id());
+            st.setInt(3, OrderInformation.getOrderedbooks());
             return st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());

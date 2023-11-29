@@ -68,6 +68,26 @@ public class BooksMethod {
         return true;
     }
 
+    public static Books getBookById(int book_id) {
+        Books book = null;
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM book WHERE book_id = " + book_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("book_id");
+                String title = res.getString("title");
+                String genre = res.getString("genre");
+                int price = res.getInt("price");
+                int stock = res.getInt("stock");
+                book = new Books(id, title, genre, price, stock);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return book;
+    }
+
     public static Connection connect() {
         String url = "jdbc:postgresql://localhost/Database_Assignment2";
         String user = "postgres";

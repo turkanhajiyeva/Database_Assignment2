@@ -34,6 +34,7 @@ CREATE TABLE BooksInformation (
 CREATE TABLE OrderInformation (
 	order_id INT REFERENCES Orders(order_id),
     book_id INT REFERENCES Books(book_id),
+    orderedbooks INT,
     PRIMARY KEY (order_id, book_id)
 );
 
