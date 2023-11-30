@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersMethod {
+public class OrdersMethod extends Destination_connection {
     public boolean addOrders(Orders Orders) {
         try (Connection connection = connect();) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO orders (order_id, customer_id,order_date,total_cost) VALUES (?,?,?,?)");
@@ -63,22 +63,6 @@ public class OrdersMethod {
             return false;
         }
         return true;
-    }
-
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
     }
 }
 
