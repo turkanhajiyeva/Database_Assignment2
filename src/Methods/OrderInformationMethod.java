@@ -1,14 +1,18 @@
 package Methods;
 
+import Connectivity.Database_connection;
 import Entity.Books;
 import Entity.OrderInformation;
-import Connection.*;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderInformationMethod extends Database_connection {
-    public boolean addOrderInformation(OrderInformation OrderInformation) {
+    public static boolean addOrderInformation(OrderInformation OrderInformation) {
         try (Connection connection = connect();
              PreparedStatement insertOrderStatement = connection.prepareStatement("INSERT INTO orderinformation (order_id, book_id,orderedbooks) VALUES (?, ?, ?)");
              PreparedStatement updateBookStatement = connection.prepareStatement("UPDATE books SET stock = ? WHERE book_id = ?")) {
@@ -43,7 +47,7 @@ public class OrderInformationMethod extends Database_connection {
         }
     }
 
-    public List<OrderInformation> getAllOrderInformation() {
+    public static List<OrderInformation> getAllOrderInformation() {
         List<OrderInformation> OrderInformation = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
@@ -53,6 +57,7 @@ public class OrderInformationMethod extends Database_connection {
                 int order_id = res.getInt("order_id");
                 int book_id = res.getInt("book_id");
                 int orderedbooks = res.getInt("orderedbooks");
+                System.out.println("order_id = " + order_id + ", book_id = " + book_id + ", orderedbooks = " + orderedbooks);
                 OrderInformation.add(new OrderInformation(order_id, book_id, orderedbooks));
             }
         } catch (Exception e) {
@@ -61,23 +66,14 @@ public class OrderInformationMethod extends Database_connection {
         return OrderInformation;
     }
 
-    public boolean updateOrderInformation(OrderInformation OrderInformation) {
+    public static boolean updateOrderInformation(OrderInformation OrderInformation) {
         try (Connection connection = connect()) {
             PreparedStatement st = connection.prepareStatement("UPDATE orderinformation SET book_id=?, orderedbooks=? WHERE order_id=?");
             st.setInt(1, OrderInformation.getBook_id());
             st.setInt(2, OrderInformation.getOrder_id());
             st.setInt(3, OrderInformation.getOrderedbooks());
-            return st.execute();
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean deleteOrderInformation(int book_id, int order_id) {
-        try (Connection connection = connect()) {
-            Statement st = connection.createStatement();
-            st.execute("DELETE FROM orderinformation WHERE book_id = " + book_id + " AND order_id = " + order_id);
+            System.out.println("Updated successfully");
+            st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
@@ -85,5 +81,34 @@ public class OrderInformationMethod extends Database_connection {
         return true;
     }
 
-}
+    public static boolean deleteOrderInformation(int book_id, int order_id) {
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("DELETE FROM orderinformation WHERE book_id = " + book_id + " AND order_id = " + order_id);
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            return false;
+        }
+        System.out.println("Successfully deleted orderinformation");
+        return true;
+    }
 
+    public static OrderInformation getOrderInformationById(int order_id) {
+        OrderInformation orderInformation = null;
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM orderinformation WHERE order_id = " + order_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("order_id");
+                int book_id = res.getInt("book_id");
+                int orderedbooks = res.getInt("orderedbooks");
+                System.out.println("order_id = " + order_id + ", book_id = " + book_id + ", orderedbooks = " + orderedbooks);
+                orderInformation = new OrderInformation(id, book_id, orderedbooks);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return orderInformation;
+    }
+}

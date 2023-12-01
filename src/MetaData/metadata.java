@@ -1,10 +1,13 @@
 package MetaData;
 
-import java.sql.*;
+import Connectivity.Database_connection;
 
-import static javax.management.remote.JMXConnectorFactory.connect;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class metadata {
+public class metadata extends Database_connection {
     public static void displayTableNamesandColumns() throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
@@ -82,21 +85,4 @@ public class metadata {
             System.out.println();
         }
     }
-
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
-    }
-
 }
