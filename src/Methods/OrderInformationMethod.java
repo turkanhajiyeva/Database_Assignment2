@@ -2,12 +2,12 @@ package Methods;
 
 import Entity.Books;
 import Entity.OrderInformation;
-
+import Connection.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderInformationMethod {
+public class OrderInformationMethod extends Database_connection {
     public boolean addOrderInformation(OrderInformation OrderInformation) {
         try (Connection connection = connect();
              PreparedStatement insertOrderStatement = connection.prepareStatement("INSERT INTO orderinformation (order_id, book_id,orderedbooks) VALUES (?, ?, ?)");
@@ -85,20 +85,5 @@ public class OrderInformationMethod {
         return true;
     }
 
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
-    }
 }
 

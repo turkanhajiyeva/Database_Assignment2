@@ -1,12 +1,12 @@
 package Methods;
 
 import Entity.Customer;
-
+import Connection.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerMethod {
+public class CustomerMethod extends Database_connection{
     public boolean addCustomer(Customer Customer) {
         try (Connection connection = connect();) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO customer (customer_id,address,email,customer_name) VALUES (?,?,?,?)");
@@ -63,21 +63,5 @@ public class CustomerMethod {
             return false;
         }
         return true;
-    }
-
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
     }
 }

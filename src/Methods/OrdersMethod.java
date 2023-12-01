@@ -1,12 +1,13 @@
 package Methods;
 
+import Connection.Database_connection;
 import Entity.Orders;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersMethod extends Destination_connection {
+public class OrdersMethod extends Database_connection {
     public boolean addOrders(Orders Orders) {
         try (Connection connection = connect();) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO orders (order_id, customer_id,order_date,total_cost) VALUES (?,?,?,?)");

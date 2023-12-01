@@ -1,12 +1,13 @@
 package Methods;
 
+import Connection.*;
 import Entity.Authors;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthorsMethod {
+public class AuthorsMethod extends Database_connection {
     public boolean addBooks(Authors authors) {
         try (Connection connection = connect();) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO authors (author_id,author_name) VALUES (?,?)");
@@ -57,22 +58,6 @@ public class AuthorsMethod {
             return false;
         }
         return true;
-    }
-
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
     }
 }
 

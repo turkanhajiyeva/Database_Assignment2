@@ -1,14 +1,18 @@
 package Methods;
 
+import Connection.Database_connection;
 import Entity.Books;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooksMethod {
+public class BooksMethod extends Database_connection {
      public boolean addBooks(Books book) {
-        try (Connection connection = connect();) {
+        try (Connection connection = connect()) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO books (book_id,title,genre,price,stock) VALUES (?,?,?,?,?)");
             st.setInt(1, book.getBook_id());
             st.setString(2, book.getTitle());
@@ -86,21 +90,5 @@ public class BooksMethod {
             System.out.println("An error occurred: " + e.getMessage());
         }
         return book;
-    }
-
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
     }
 }

@@ -1,12 +1,13 @@
 package Methods;
 
+import Connection.*;
 import Entity.BooksInformation;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooksInformationMethod {
+public class BooksInformationMethod extends Database_connection{
     public boolean addBooksInformation(BooksInformation BooksInformation) {
         try (Connection connection = connect();) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO booksinformation (book_id,author_id) VALUES (?,?)");
@@ -58,21 +59,4 @@ public class BooksInformationMethod {
         }
         return true;
     }
-
-    public static Connection connect() {
-        String url = "jdbc:postgresql://localhost/Database_Assignment2";
-        String user = "postgres";
-        String password = "1234";
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
-        } catch (SQLException var5) {
-            System.out.println(var5.getMessage());
-        }
-
-        return con;
-    }
 }
-
