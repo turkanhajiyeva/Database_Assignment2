@@ -80,11 +80,10 @@ public class OrderInformationMethod extends Database_connection {
         }
         return true;
     }
-
-    public static boolean deleteOrderInformation(int book_id, int order_id) {
+    public static boolean deleteOrderInformation(int order_id, int book_id) {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("DELETE FROM orderinformation WHERE book_id = " + book_id + " AND order_id = " + order_id);
+            st.execute("DELETE FROM orderinformation WHERE order_id = " + order_id + " AND book_id = " + book_id);
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
@@ -93,8 +92,8 @@ public class OrderInformationMethod extends Database_connection {
         return true;
     }
 
-    public static OrderInformation getOrderInformationById(int order_id) {
-        OrderInformation orderInformation = null;
+    public static List<OrderInformation> getAllOrderInformationById(int order_id) {
+        List<OrderInformation> orderInformation = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
             st.execute("SELECT * FROM orderinformation WHERE order_id = " + order_id);
@@ -104,7 +103,26 @@ public class OrderInformationMethod extends Database_connection {
                 int book_id = res.getInt("book_id");
                 int orderedbooks = res.getInt("orderedbooks");
                 System.out.println("order_id = " + order_id + ", book_id = " + book_id + ", orderedbooks = " + orderedbooks);
-                orderInformation = new OrderInformation(id, book_id, orderedbooks);
+                orderInformation.add(new OrderInformation(id, book_id, orderedbooks));
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return orderInformation;
+    }
+
+    public static OrderInformation getOrderInformationByOrderIdAndBookId(int order_id, int book_id) {
+        OrderInformation orderInformation = null;
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM orderinformation WHERE order_id = " + order_id + " AND book_id = " + book_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("order_id");
+                int get_book_id = res.getInt("book_id");
+                int orderedbooks = res.getInt("orderedbooks");
+                System.out.println("order_id = " + order_id + ", book_id = " + get_book_id + ", orderedbooks = " + orderedbooks);
+                orderInformation = new OrderInformation(id, get_book_id, orderedbooks);
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());

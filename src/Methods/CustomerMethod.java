@@ -1,20 +1,23 @@
 package Methods;
 
-import Entity.Books;
+import Connectivity.Database_connection;
 import Entity.Customer;
-import Connectivity.*;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerMethod extends Database_connection{
+public class CustomerMethod extends Database_connection {
     public static boolean addCustomer(Customer Customer) {
         try (Connection connection = connect();) {
-            PreparedStatement st = connection.prepareStatement("INSERT INTO customer (customer_id,address,email,customer_name) VALUES (?,?,?,?)");
+            PreparedStatement st = connection.prepareStatement("INSERT INTO customer (customer_id,customer_name,address,email,) VALUES (?,?,?,?)");
             st.setInt(1, Customer.getCustomer_id());
+            st.setString(4, Customer.getCustomer_name());
             st.setString(2, Customer.getAddress());
             st.setString(3, Customer.getEmail());
-            st.setString(4, Customer.getCustomer_name());
             System.out.println("Inserting Customer");
             st.execute();
         } catch (Exception e) {
@@ -33,12 +36,12 @@ public class CustomerMethod extends Database_connection{
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int customer_id = res.getInt("customer_id");
+                String customer_name = res.getString("customer_name");
                 String address = res.getString("address");
                 String email = res.getString("email");
-                String customer_name = res.getString("customer_name");
-                System.out.println("customer_id = " + customer_id + ", address = " + address + ", email = " + email
-                        + ", customer_name = " + customer_name);
-                Customer.add(new Customer(customer_id, address, email, customer_name));
+                System.out.println("customer_id = " + customer_id + ", customer_name = " + customer_name + ", address = " + address
+                        + ", email = " + email);
+                Customer.add(new Customer(customer_id, customer_name, address, email));
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -48,10 +51,10 @@ public class CustomerMethod extends Database_connection{
 
     public static boolean updateCustomer(Customer Customer) {
         try (Connection connection = connect()) {
-            PreparedStatement st = connection.prepareStatement("UPDATE customer SET address=?, email=?, customer_name=? WHERE customer_id=?");
+            PreparedStatement st = connection.prepareStatement("UPDATE customer SET customer_name=?, address=?, email=?,  WHERE customer_id=?");
+            st.setString(3, Customer.getCustomer_name());
             st.setString(1, Customer.getAddress());
             st.setString(2, Customer.getEmail());
-            st.setString(3, Customer.getCustomer_name());
             st.setInt(4, Customer.getCustomer_id());
             System.out.println("Updated successfully");
             st.execute();
@@ -73,7 +76,6 @@ public class CustomerMethod extends Database_connection{
         System.out.println("Successfully Deleted Customer");
         return true;
     }
-
     public static Customer getCustomerById(int customer_id) {
         Customer customer = null;
         try (Connection connection = connect()) {
@@ -82,12 +84,12 @@ public class CustomerMethod extends Database_connection{
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id = res.getInt("customer_id");
+                String customer_name = res.getString("customer_name");
                 String address = res.getString("address");
                 String email = res.getString("email");
-                String customer_name = res.getString("customer_name");
-                System.out.println("customer_id = " + customer_id + ", address = " + address + ", email = " + email
-                        + ", customer_name = " + customer_name);
-                customer = new Customer(id, address, email, customer_name);
+                System.out.println("customer_id = " + customer_id + ", customer_name = " + customer_name + ", address = " + address
+                        + ", email = " + email);
+                customer = new Customer(id, customer_name, address, email);
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());

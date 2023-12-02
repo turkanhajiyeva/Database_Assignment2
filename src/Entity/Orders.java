@@ -5,9 +5,7 @@ import java.sql.Date;
 public class Orders {
     private int order_id;
     private int customer_id;
-
     private Date order_date;
-
     private int total_cost;
 
     public Orders() {

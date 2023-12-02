@@ -12,7 +12,6 @@ public abstract class Database_connection {
         Connection con = null;
         try {
             con = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to Database successfully.");
         } catch (SQLException var5) {
             System.out.println(var5.getMessage());
         }

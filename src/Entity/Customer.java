@@ -2,18 +2,18 @@ package Entity;
 
 public class Customer {
     private int customer_id;
-    private String email;
-    private String address;
     private String customer_name;
+    private String address;
+    private String email;
 
-    public Customer() {
+    public Customer(int customer_id, String customer_name, String address, String email) {
+        this.customer_id = customer_id;
+        this.customer_name = customer_name;
+        this.address = address;
+        this.email = email;
     }
 
-    public Customer(int customer_id, String email, String address, String customer_name) {
-        this.customer_id = customer_id;
-        this.email = email;
-        this.address = address;
-        this.customer_name = customer_name;
+    public Customer() {
     }
 
     public int getCustomer_id() {
@@ -24,12 +24,12 @@ public class Customer {
         this.customer_id = customer_id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCustomer_name() {
+        return customer_name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCustomer_name(String customer_name) {
+        this.customer_name = customer_name;
     }
 
     public String getAddress() {
@@ -40,21 +40,21 @@ public class Customer {
         this.address = address;
     }
 
-    public String getCustomer_name() {
-        return customer_name;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCustomer_name(String customer_name) {
-        this.customer_name = customer_name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
         return "Customer{" +
                 "customer_id=" + customer_id +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
                 ", customer_name='" + customer_name + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

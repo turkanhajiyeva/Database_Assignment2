@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BooksMethod extends Database_connection {
-     public static boolean addBooks(Books book) {
+    public static boolean addBooks(Books book) {
         try (Connection connection = connect()) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO books (book_id,title,genre,price,stock) VALUES (?,?,?,?,?)");
             st.setInt(1, book.getBook_id());
@@ -42,7 +42,7 @@ public class BooksMethod extends Database_connection {
                 int price = res.getInt("price");
                 int stock = res.getInt("stock");
                 System.out.println("book_id = " + book_id + ", title = " + title + ", genre = " + genre
-                + ", price = " + price + "$, stock = " + stock);
+                        + ", price = " + price + "$, stock = " + stock);
                 books.add(new Books(book_id, title, genre, price, stock));
             }
         } catch (Exception e) {
@@ -79,7 +79,6 @@ public class BooksMethod extends Database_connection {
         System.out.println("Successfully Deleted book");
         return true;
     }
-
     public static Books getBookById(int book_id) {
         Books book = null;
         try (Connection connection = connect()) {
@@ -98,6 +97,9 @@ public class BooksMethod extends Database_connection {
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (book == null) {
+            System.out.println("No book found with book_id = " + book_id);
         }
         return book;
     }

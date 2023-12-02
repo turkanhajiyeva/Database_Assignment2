@@ -1,14 +1,16 @@
 package Methods;
 
-import Connectivity.*;
-import Entity.Authors;
+import Connectivity.Database_connection;
 import Entity.BooksInformation;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooksInformationMethod extends Database_connection{
+public class BooksInformationMethod extends Database_connection {
     public static boolean addBooksInformation(BooksInformation BooksInformation) {
         try (Connection connection = connect();) {
             PreparedStatement st = connection.prepareStatement("INSERT INTO booksinformation (book_id,author_id) VALUES (?,?)");
@@ -34,7 +36,7 @@ public class BooksInformationMethod extends Database_connection{
                 int book_id = res.getInt("book_id");
                 int author_id = res.getInt("author_id");
                 System.out.println("book_id = " + book_id + ", author_id = " + author_id);
-                BooksInformation.add(new BooksInformation(book_id,author_id));
+                BooksInformation.add(new BooksInformation(book_id, author_id));
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -68,17 +70,34 @@ public class BooksInformationMethod extends Database_connection{
         return true;
     }
 
-    public static BooksInformation getBooksInformationById(int book_id) {
-        BooksInformation booksInformation = null;
+    public static List<BooksInformation> getAllBooksInformationById(int book_id) {
+        List<BooksInformation> booksInformation = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
             st.execute("SELECT * FROM booksinformation WHERE book_id = " + book_id);
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id = res.getInt("book_id");
-                int author_id = res.getInt("author_id");
-                System.out.println("book_id = " + book_id + ", author_id = " + author_id);
-                booksInformation = new BooksInformation(id, author_id);
+                int id2 = res.getInt("author_id");
+                System.out.println("book_id = " + book_id + ", author_id = " + id2);
+                booksInformation.add(new BooksInformation(id, id2));
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return booksInformation;
+    }
+    public static BooksInformation getBooksInformationById(int book_id, int author_id) {
+        BooksInformation booksInformation = null;
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM booksinformation WHERE book_id = " + book_id + " AND author_id = " + author_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("book_id");
+                int id2 = res.getInt("author_id");
+                System.out.println("book_id = " + book_id + ", author_id = " + id2);
+                booksInformation = new BooksInformation(id, id2);
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
