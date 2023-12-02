@@ -4,6 +4,7 @@ import Entity.*;
 import Methods.*;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -80,13 +81,16 @@ public class Main {
             bookMenu();
         }
         if (choice == 2) {
-            BooksMethod.getAllBooks();
+            List<Books> books = BooksMethod.getAllBooks();
+            if (books.size() == 0) {
+                System.out.println("No record found");
+            }
             bookMenu();
         }
         if (choice == 3) {
             System.out.print("Enter the id of the book you want to get: ");
             int book_id = sc.nextInt();
-            BooksMethod.getBookById(book_id);
+            Books books = BooksMethod.getBookById(book_id);
             bookMenu();
         }
         if (choice == 4) {
@@ -154,7 +158,10 @@ public class Main {
             authorMenu();
         }
         if (choice == 2) {
-            AuthorsMethod.getAllAuthors();
+            List<Authors> authors = AuthorsMethod.getAllAuthors();
+            if (authors.size() == 0) {
+                System.out.println("No record found");
+            }
             authorMenu();
         }
         if (choice == 3) {
@@ -172,7 +179,8 @@ public class Main {
             sc.nextLine();
             Authors author = AuthorsMethod.getAuthorById(author_id);
             if (author == null) {
-                bookMenu();
+                System.out.println("No author found");
+                authorMenu();
             }
             System.out.println("Enter new values to fields you want to update");
             System.out.print("New author_name: ");
@@ -219,13 +227,19 @@ public class Main {
             bookInformationMenu();
         }
         if (choice == 2) {
-            BooksInformationMethod.getAllBooksInformation();
+            List<BooksInformation> BooksInformation = BooksInformationMethod.getAllBooksInformation();
+            if (BooksInformation.size() == 0) {
+                System.out.println("No record found");
+            }
             bookInformationMenu();
         }
         if (choice == 3) {
             System.out.print("Enter the id of the book you want to get: ");
             int book_id = sc.nextInt();
-            BooksInformationMethod.getAllBooksInformationById(book_id);
+            List<BooksInformation> booksInformation = BooksInformationMethod.getAllBooksInformationById(book_id);
+            if (booksInformation.size() == 0) {
+                System.out.println("No book information found");
+            }
             bookInformationMenu();
         }
         if (choice == 4) {
@@ -235,6 +249,7 @@ public class Main {
             int author_id = sc.nextInt();
             BooksInformation booksInformation = BooksInformationMethod.getBooksInformationById(book_id, author_id);
             if (booksInformation == null) {
+                System.out.println("No book information found");
                 bookInformationMenu();
             }
             System.out.println("Enter new values to fields you want to update");
@@ -278,6 +293,7 @@ public class Main {
         if (choice == 1) {
             System.out.print("customer_id: ");
             int customer_id = sc.nextInt();
+            sc.nextLine();
             System.out.print("customer_name: ");
             String customer_name = sc.nextLine();
             System.out.print("customer address: ");
@@ -288,20 +304,28 @@ public class Main {
             customerMenu();
         }
         if (choice == 2) {
-            CustomerMethod.getAllCustomer();
+            List<Customer> Customer = CustomerMethod.getAllCustomer();
+            if (Customer.size() == 0) {
+                System.out.println("No record found");
+            }
             customerMenu();
         }
         if (choice == 3) {
             System.out.print("Enter the id of the customer you want to get: ");
             int customer_id = sc.nextInt();
-            CustomerMethod.getCustomerById(customer_id);
+            Customer customer = CustomerMethod.getCustomerById(customer_id);
+            if (customer == null) {
+                System.out.println("No customer found");
+            }
             customerMenu();
         }
         if (choice == 4) {
             System.out.print("Enter the id of the customer you want to update: ");
             int customer_id = sc.nextInt();
+            sc.nextLine();
             Customer customer = CustomerMethod.getCustomerById(customer_id);
             if (customer == null) {
+                System.out.println("No customer found");
                 customerMenu();
             }
             System.out.println("Enter new values to fields you want to update");
@@ -357,13 +381,19 @@ public class Main {
             orderInformationMenu();
         }
         if (choice == 2) {
-            OrderInformationMethod.getAllOrderInformation();
+            List<OrderInformation> OrderInformation = OrderInformationMethod.getAllOrderInformation();
+            if (OrderInformation.size() == 0) {
+                System.out.println("No record found");
+            }
             orderInformationMenu();
         }
         if (choice == 3) {
             System.out.print("Enter the id of the order you want to get: ");
             int order_id = sc.nextInt();
-            OrderInformationMethod.getAllOrderInformationById(order_id);
+            List<OrderInformation> orderInformation = OrderInformationMethod.getAllOrderInformationById(order_id);
+            if(orderInformation.size() == 0){
+                System.out.println("No order information found");
+            }
             orderInformationMenu();
         }
         if (choice == 4) {
@@ -373,6 +403,7 @@ public class Main {
             int book_id = sc.nextInt();
             OrderInformation orderInformation = OrderInformationMethod.getOrderInformationByOrderIdAndBookId(order_id, book_id);
             if (orderInformation == null) {
+                System.out.println("No order information found");
                 orderInformationMenu();
             }
             System.out.println("Enter new values to fields you want to update");
@@ -421,6 +452,7 @@ public class Main {
             int order_id = sc.nextInt();
             System.out.print("customer_id: ");
             int customer_id = sc.nextInt();
+            sc.nextLine();
             System.out.print("order date: ");
             String date = sc.nextLine();
             Date dateStr = Date.valueOf(date);
@@ -430,13 +462,19 @@ public class Main {
             orderMenu();
         }
         if (choice == 2) {
-            OrdersMethod.getAllOrders();
+            List<Orders> Orders =  OrdersMethod.getAllOrders();
+            if (Orders.size() == 0) {
+                System.out.println("No record found");
+            }
             orderMenu();
         }
         if (choice == 3) {
             System.out.print("Enter the id of the order you want to get: ");
             int order_id = sc.nextInt();
-            OrdersMethod.getOrderById(order_id);
+            Orders order = OrdersMethod.getOrderById(order_id);
+            if(order == null){
+                System.out.println("No order found");
+            }
             orderMenu();
         }
         if (choice == 4) {
@@ -444,6 +482,7 @@ public class Main {
             int customer_id = sc.nextInt();
             Orders order = OrdersMethod.getOrderById(customer_id);
             if (order == null) {
+                System.out.println("No order found");
                 orderMenu();
             }
             System.out.println("Enter new values to fields you want to update");
