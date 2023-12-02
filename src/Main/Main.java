@@ -480,6 +480,7 @@ public class Main {
         if (choice == 4) {
             System.out.print("Enter the id of the order you want to update: ");
             int customer_id = sc.nextInt();
+            sc.nextLine();
             Orders order = OrdersMethod.getOrderById(customer_id);
             if (order == null) {
                 System.out.println("No order found");
