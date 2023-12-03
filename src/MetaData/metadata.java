@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class metadata extends Database_connection {
-    public static void displayTableNamesandColumns() throws SQLException {
+    public static void printTableNamesandColumns() throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});
@@ -16,12 +16,12 @@ public class metadata extends Database_connection {
             String tableName = tables.getString("TABLE_NAME");
             System.out.println(tableName);
             System.out.println();
-            displayColumns(tableName);
+            printColumns(tableName);
             System.out.println();
         }
     }
 
-    public static void displayColumns(String tableName) throws SQLException {
+    public static void printColumns(String tableName) throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet columns = metaData.getColumns(null, null, tableName, null);
@@ -31,7 +31,7 @@ public class metadata extends Database_connection {
         }
     }
 
-    public static void displayColumnDetails() throws SQLException {
+    public static void printColumnDetails() throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});
@@ -49,7 +49,7 @@ public class metadata extends Database_connection {
         }
     }
 
-    public static void displayPrimaryKeys() throws SQLException {
+    public static void printPrimaryKeys() throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});
@@ -66,7 +66,7 @@ public class metadata extends Database_connection {
         }
     }
 
-    public static void displayForeignKeys() throws SQLException {
+    public static void printForeignKeys() throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});

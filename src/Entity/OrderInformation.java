@@ -3,8 +3,8 @@ package Entity;
 public class OrderInformation {
     private int order_id;
     private int book_id;
-
     private int orderedbooks;
+
     public OrderInformation() {
     }
 

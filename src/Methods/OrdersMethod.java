@@ -48,10 +48,10 @@ public class OrdersMethod extends Database_connection {
     public static boolean updateOrders(Orders Orders) {
         try (Connection connection = connect()) {
             PreparedStatement st = connection.prepareStatement("UPDATE orders SET customer_id=?, order_date=?, total_cost=? WHERE order_id=?");
-            st.setInt(4, Orders.getCustomer_id());
-            st.setDate(1, Orders.getOrder_date());
-            st.setInt(2, Orders.getTotal_cost());
-            st.setInt(4, Orders.getCustomer_id());
+            st.setInt(1, Orders.getCustomer_id());
+            st.setDate(2, Orders.getOrder_date());
+            st.setInt(3, Orders.getTotal_cost());
+            st.setInt(4, Orders.getOrder_id());
             System.out.println("Updated successfully");
             st.execute();
         } catch (Exception e) {

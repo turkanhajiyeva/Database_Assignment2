@@ -20,21 +20,25 @@ public class OrderInformationMethod extends Database_connection {
             connection.setAutoCommit(false);
 
             int book_id = OrderInformation.getBook_id();
-            int orderedbooks = OrderInformation.getOrderedbooks();
+            int quantity = OrderInformation.getOrderedbooks();
             Books book = BooksMethod.getBookById(book_id);
 
-            if (book != null && book.getStock() >= orderedbooks) {
+            if (book != null && book.getStock() >= quantity) {
                 insertOrderStatement.setInt(1, OrderInformation.getOrder_id());
                 insertOrderStatement.setInt(2, OrderInformation.getBook_id());
                 insertOrderStatement.setInt(3, OrderInformation.getOrderedbooks());
+
                 insertOrderStatement.executeUpdate();
 
-                int updatedStock = book.getStock() - orderedbooks;
+                int updatedStock = book.getStock() - quantity;
                 updateBookStatement.setInt(1, updatedStock);
                 updateBookStatement.setInt(2, book_id);
+
                 updateBookStatement.executeUpdate();
 
                 connection.commit();
+
+                System.out.println("Order detail inserted successfully");
                 return true;
             } else {
                 connection.rollback();
@@ -70,8 +74,8 @@ public class OrderInformationMethod extends Database_connection {
         try (Connection connection = connect()) {
             PreparedStatement st = connection.prepareStatement("UPDATE orderinformation SET book_id=?, orderedbooks=? WHERE order_id=?");
             st.setInt(1, OrderInformation.getBook_id());
-            st.setInt(2, OrderInformation.getOrder_id());
-            st.setInt(3, OrderInformation.getOrderedbooks());
+            st.setInt(3, OrderInformation.getOrder_id());
+            st.setInt(2, OrderInformation.getOrderedbooks());
             System.out.println("Updated successfully");
             st.execute();
         } catch (Exception e) {

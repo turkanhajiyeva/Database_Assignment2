@@ -1,9 +1,11 @@
 package Main;
 
 import Entity.*;
+import MetaData.metadata;
 import Methods.*;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +27,11 @@ public class Main {
                     4.orders table
                     5.booksinformation table
                     6.ordersinformation table
-                    7.Exit from application""");
+                    7.Retrieve All Table names and Columns
+                    8.Retrieve Column data types
+                    9.Retrieve Primary keys
+                    10.Retrieve Foreign keys
+                    11.Exit from application""");
             int option = sc.nextInt();
             if (option == 1) {
                 bookMenu();
@@ -45,7 +51,39 @@ public class Main {
             if (option == 6) {
                 orderInformationMenu();
             }
-            if (option == 7) {
+            if(option == 7){
+                try {
+                    metadata.printTableNamesandColumns();
+                    mainMenu();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(option == 8){
+                try {
+                    metadata.printColumnDetails();
+                    mainMenu();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(option == 9){
+                try {
+                    metadata.printPrimaryKeys();
+                    mainMenu();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(option == 10){
+                try {
+                    metadata.printForeignKeys();
+                    mainMenu();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (option == 11) {
                 exitApplication();
             }
         }
@@ -59,7 +97,8 @@ public class Main {
                 3.Get book by book_id
                 4.Update book
                 5.Delete book
-                6.Back to choices menu
+                6.Get All book information
+                7.Back to choices menu
                             """);
         System.out.print("Choose what to do: ");
         int choice = sc.nextInt();
@@ -130,8 +169,14 @@ public class Main {
             BooksMethod.deleteBooks(book_id);
             bookMenu();
         }
-
-        if (choice == 6) {
+        if(choice == 6){
+            List<Books> books = BooksMethod.getAllBookInformation();
+            if(books.size() == 0){
+                System.out.println("No records found");
+            }
+            bookMenu();
+        }
+        if (choice == 7) {
             mainMenu();
         }
     }
@@ -370,12 +415,13 @@ public class Main {
                             """);
         System.out.print("Choose what to do: ");
         int choice = sc.nextInt();
+        sc.nextLine();
         if (choice == 1) {
             System.out.print("order_id: ");
             int order_id = sc.nextInt();
             System.out.print("book_id: ");
             int book_id = sc.nextInt();
-            System.out.println("Ordered books: ");
+            System.out.print("Ordered books: ");
             int ordered_books = sc.nextInt();
             OrderInformationMethod.addOrderInformation(new OrderInformation(order_id, book_id, ordered_books));
             orderInformationMenu();
@@ -489,6 +535,7 @@ public class Main {
             System.out.println("Enter new values to fields you want to update");
             System.out.print("New customer_id: ");
             int update_customer_id = sc.nextInt();
+            sc.nextLine();
             System.out.print("New date: ");
             String date = sc.nextLine();
             Date update_dateStr = Date.valueOf(date);
@@ -521,4 +568,3 @@ public class Main {
         System.exit(0);
     }
 }
-
