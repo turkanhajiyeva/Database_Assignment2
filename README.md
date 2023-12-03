@@ -5,7 +5,7 @@
 <ol>
 <li>In order to run this application you first need to clone this repository. You can do it by using command prompt
 <b style="color: #900C3F">git clone https://github.com/turkanhajiyeva/Database_Assignment2.git </b>. Another method you can use is to download it as a zip file. </li>
-<li> You can open your project in any application that runs Java such as <p style="color: #FF5733; font-weight: bold">VS Code, Intellij, NetBeans, Eclipse, BlueJ, and etc. </p></li>
+<li> You can open your project in any application that runs Java such as <b style="color: #FF5733; font-weight: bold">VS Code, Intellij, NetBeans, Eclipse, BlueJ, and etc. </b></li>
 <li>Using <b style="color: #FF5733">pgAdmin</b>, create a postgreSQL database using the SQL codes in this repository. It's located in <b style="color: #ffc30f ">src -> SQL_Scripts</b>. Copy & paste the codes to the Query tool and run it. </li>
 <li>Now you have successfully created the tables. We need to go back to our application and connect the database to our Java application. The file we need is located in <b style="color: #ffc30f"> src -> Connectivity -> Database_connection</b>. </li>
 <li>In that file, you should fill out <b style="color: #FF5733"> url</b>, <b style="color: #FF5733">user</b> and <b style="color: #FF5733">password. </b></li>
