@@ -58,7 +58,7 @@ public class BooksInformationMethod extends Database_connection {
         return true;
     }
 
-    public static boolean deleteBooksInformation(int author_id, int book_id) {
+    public static boolean deleteBooksInformation(int book_id, int author_id) {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
             st.execute("DELETE FROM booksinformation WHERE book_id = " + book_id + " AND author_id = " + author_id);
